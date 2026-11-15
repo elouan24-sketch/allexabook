@@ -158,7 +158,7 @@ var DEF={books:[
 {id:8,t:"Misery",a:"Stephen King",p:368,g:"Thriller",c:7,s:"wishlist",st:"",en:"",r:{Intrigue:0,Émotion:0,Style:0},one:"",mood:-1,q:[],ost:""}],
 bingo:["Couverture bleue","< 200 pages","Un classique","Premier roman","Livre offert","Un thriller","Auteur·rice français·e","Adapté en film","Un livre d’1 jour","Lu en voyage","Un coup de cœur","Un poche","Titre d’1 mot","Un livre triste","Une dystopie","Un livre drôle","Un prix littéraire","Une BD","Recommandé par une amie","Lu à voix haute","Couverture rose","Une saga","Un livre de poésie","Un récit vrai","Plus de 600 pages"],
 done:[1,14,2,4,10]};
-var API="https://www.googleapis.com/books/v1/volumes",KEY="",RECS,RLOAD=false,RERR=false,RL=[],RES=[],PK={};
+var API="https://www.googleapis.com/books/v1/volumes",KEY="AIzaSyD9Ma-plVLrSZobSzh-cdE3OPv4knLtCng",RECS,RLOAD=false,RERR=false,RL=[],RES=[],PK={};
 function KQ(){return KEY?"&key="+KEY:""}
 function norm(i){var v=i.volumeInfo||{},im=(v.imageLinks&&(v.imageLinks.thumbnail||v.imageLinks.smallThumbnail)||"").replace("http:","https:").replace("&edge=curl","").replace("zoom=1","zoom=2");return{gid:i.id,r:v.averageRating||0,t:v.title||"?",a:(v.authors||["?"])[0],p:v.pageCount||250,g:((v.categories||["Roman"])[0]||"Roman").split(" / ")[0],img:im}}
 async function srch(){var q=document.getElementById("nq").value.trim(),o=document.getElementById("rs");if(!q)return;o.innerHTML='<p class="muted">Recherche…</p>';
