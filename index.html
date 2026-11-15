@@ -2,7 +2,7 @@
 <html lang="fr"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Mon carnet de lectures</title>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Special+Elite&family=Abril+Fatface&family=Bebas+Neue&family=Playfair+Display:ital,wght@1,900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Special+Elite&family=Kalam:wght@400;700&family=Gochi+Hand&family=Abril+Fatface&family=Bebas+Neue&family=Playfair+Display:ital,wght@1,900&display=swap" rel="stylesheet">
 <style>
 :root{--paper:#fbf6ec;--ink:#3b2f2a;--card:#fffdf8;--kraft:#c9a97a;--rose:#e8a0b4;--sage:#9db89a;--mus:#e3b448;--sky:#8fb8d8;--wood:#9a6b3f;--red:#c0392b;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -137,6 +137,9 @@ body[data-t=cal] h2{box-shadow:2px 3px 0 #8fb8d8}body[data-t=wish] h2{box-shadow
 .bingo{gap:6px}.cell{font:700 13px/1 'Caveat',cursive;border:0;box-shadow:1px 3px 5px rgba(0,0,0,.22);transform:rotate(var(--r,0deg));color:#3b2f2a}
 .cell.c0{background:#fff3a3}.cell.c1{background:#ffd1dc}.cell.c2{background:#cfe8ff}.cell.c3{background:#d6f0c8}.cell.c4{background:#fde0c5}
 .cell.v:nth-child(even)::after{color:#1e8449;border-color:#1e8449}
+input,select,textarea{font-family:'Kalam','Caveat',cursive;font-weight:700;font-size:18px;letter-spacing:.2px}
+input::placeholder{font-family:'Gochi Hand','Kalam',cursive;font-weight:400;opacity:.55;font-size:19px}
+.cell input{font:11px/1.05 'Special Elite',monospace}
 </style></head><body>
 <svg width="0" height="0" style="position:absolute"><filter id="ink"><feTurbulence baseFrequency=".9" numOctaves="2" result="t"/><feDisplacementMap in="SourceGraphic" in2="t" scale="2"/></filter></svg>
 <div id="app"></div><nav id="nav"></nav><div id="modal"></div>
@@ -163,7 +166,7 @@ function KQ(){return KEY?"&key="+KEY:""}
 function norm(i){var v=i.volumeInfo||{},im=(v.imageLinks&&(v.imageLinks.thumbnail||v.imageLinks.smallThumbnail)||"").replace("http:","https:").replace("&edge=curl","").replace("zoom=1","zoom=2");return{gid:i.id,r:v.averageRating||0,t:v.title||"?",a:(v.authors||["?"])[0],p:v.pageCount||250,g:((v.categories||["Roman"])[0]||"Roman").split(" / ")[0],img:im}}
 async function srch(){var q=document.getElementById("nq").value.trim(),o=document.getElementById("rs");if(!q)return;o.innerHTML='<p class="muted">Recherche…</p>';
 if(/^[\d-]{10,17}$/.test(q))q="isbn:"+q.replace(/-/g,"");
-try{var r=await fetch(API+"?q="+encodeURIComponent(q)+"&maxResults=8&printType=books&langRestrict=fr"+KQ());if(!r.ok)throw 0;var j=await r.json();RES=(j.items||[]).map(norm);
+try{var r=await fetch(API+"?q="+encodeURIComponent(q)+"&maxResults=8&printType=books&langRestrict=fr"+KQ());if(!r.ok)throw 0;var j=await r.json();RES=(j.items||[]).map(norm).filter(function(b,i,a){return a.findIndex(function(x){return x.t.toLowerCase()==b.t.toLowerCase()})==i});
 o.innerHTML=RES.length?RES.map(function(b,i){return'<div class="res" onclick="pickRes('+i+')">'+(b.img?'<img src="'+esc(b.img)+'" alt="">':'')+'<div><b>'+esc(b.t)+'</b><div class="muted">'+esc(b.a)+' · '+b.p+' p.</div></div></div>'}).join(""):'<p class="muted">Aucun résultat.</p>'}
 catch(e){o.innerHTML='<p class="muted">Recherche indisponible (hors ligne, quota ou accès bloqué). Tu peux saisir à la main.</p>'}}
 function pickRes(i){PK=RES[i];document.getElementById("nt").value=PK.t;document.getElementById("na").value=PK.a;document.getElementById("np").value=PK.p;document.getElementById("rs").innerHTML='<div class="row" style="align-items:flex-start">'+(PK.img?'<img class="cv" src="'+esc(PK.img)+'" alt="">':"")+'<p class="muted" style="flex:2">✓ '+esc(PK.t)+' sélectionné</p></div>'}
@@ -173,12 +176,13 @@ function sc(M){var o={};for(var k in M)o[k]=M[k].reduce(function(a,c){return a+c
 var as=sc(A),gs=sc(G);function top(o){return Object.keys(o).filter(function(k){return o[k]>0}).sort(function(a,b){return o[b]-o[a]}).slice(0,3)}
 var ta=top(as),qs=ta.map(function(a){return['inauthor:"'+a+'"',a]}).concat(top(gs).map(function(g){return['subject:"'+g+'"',g]})),
 have=S.books.map(function(b){return b.t.toLowerCase()}),gids=S.books.map(function(b){return b.gid});
+var fav=favCrit(rd);if(fav)CQ[fav].forEach(function(q){qs.push([q,fav,"c"])});
 if(!qs.length){RECS=[];RLOAD=false;if(T=="wish")render();return}
 try{var res=await Promise.all(qs.map(function(q){return fetch(API+"?q="+encodeURIComponent(q[0])+"&maxResults=10&printType=books&langRestrict=fr"+KQ()).then(function(r){if(!r.ok)throw 0;return r.json()})}));
 var out=[],seen={};res.forEach(function(j,qi){var isA=qi<ta.length,lb=qs[qi][1];(j.items||[]).forEach(function(it){var c=norm(it),k=c.t.toLowerCase();
 if(have.indexOf(k)>=0||gids.indexOf(c.gid)>=0||seen[k]||(as[c.a]!==undefined&&as[c.a]<0))return;seen[k]=1;
-var v=isA?as[lb]:gs[lb],s2=(isA?v*3+3:v*2+1)+(as[c.a]||0)*3+(c.r||0)/5;
-out.push({c:c,sc:s2,why:{t:lb},reason:isA?'Tu notes '+f1(v+3)+'★ en moyenne les livres de '+lb:'Le genre « '+lb+' » te réussit : '+f1(v+3)+'★ de moyenne'})})});
+var cr=qs[qi][2]=="c",v=isA?as[lb]:gs[lb],s2=(cr?2.5:isA?v*3+3:v*2+1)+(as[c.a]||0)*3+(c.r||0)/5;
+out.push({c:c,sc:s2,why:{t:lb},reason:cr?'Tes meilleures notes vont aux livres où '+lb+' est forte':isA?'Tu notes '+f1(v+3)+'★ en moyenne les livres de '+lb:'Le genre « '+lb+' » te réussit : '+f1(v+3)+'★ de moyenne'})})});
 RECS=out.sort(function(a,b){return b.sc-a.sc}).slice(0,8)}catch(e){RERR=true;RECS=recs()}
 RLOAD=false;if(T=="wish")render()}
 function f1(x){return(Math.round(x*10)/10).toString().replace(".",",")}
@@ -196,12 +200,13 @@ function vinyl(t){var x=esc(t.length>22?t.slice(0,21)+"…":t);return'<svg viewB
 function cass(t){var x=esc(t.length>26?t.slice(0,25)+"…":t);return'<svg viewBox="0 0 200 124" width="210" style="display:block;margin:8px auto;transform:rotate(-2deg)"><rect x="2" y="2" width="196" height="120" rx="8" fill="#d9c9a8" stroke="#3b2f2a" stroke-width="3"/><rect x="16" y="12" width="168" height="48" rx="4" fill="#fffdf8" stroke="#3b2f2a"/><text x="100" y="42" text-anchor="middle" font-family="Caveat,cursive" font-size="20" fill="#c0392b">'+x+'</text><rect x="50" y="72" width="100" height="30" rx="15" fill="#3b2f2a"/><circle cx="76" cy="87" r="10" fill="#fffdf8"/><circle cx="124" cy="87" r="10" fill="#fffdf8"/><circle cx="76" cy="87" r="4" fill="#3b2f2a"/><circle cx="124" cy="87" r="4" fill="#3b2f2a"/></svg>'}
 var S;try{S=JSON.parse(localStorage.getItem("carnet-v1"))}catch(e){}
 if(!S||!S.books)S=JSON.parse(JSON.stringify(DEF));
+S.books.forEach(function(b){if(b.ov==null){var v=Object.values(b.r||{}).filter(function(x){return x>0});b.ov=v.length?Math.round(v.reduce(function(a,c){return a+c},0)/v.length*2)/2:0}});
 var BE=false,T="shelf",V="face",M={y:2026,m:10},SORT="note",F="all",SEL=0;
 function save(){try{localStorage.setItem("carnet-v1",JSON.stringify(S))}catch(e){}}
 function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 function tilt(id){return(((id*37)%70)-35)/10}
 function bk(id){return S.books.filter(function(b){return b.id==id})[0]}
-function avg(b){var v=Object.values(b.r).filter(function(x){return x>0});return v.length?v.reduce(function(a,c){return a+c},0)/v.length:0}
+function avg(b){return b.ov||0}
 function days(a,b){return Math.round((Date.parse(b)-Date.parse(a))/864e5)+1}
 function $(h){document.getElementById("app").innerHTML=h}
 function setT(t){T=t;render()}
@@ -246,7 +251,10 @@ function recs(){
 var liked=S.books.filter(function(b){return b.s=="read"&&avg(b)>=4}),have=S.books.map(function(b){return b.t});
 return CAND.filter(function(c){return have.indexOf(c.t)<0}).map(function(c){var sc=0,why=null;
 liked.forEach(function(b){if(b.a==c.a){sc+=3;why=b}else if(b.g==c.g){sc+=1;why=why||b}});return{c:c,sc:sc,why:why}}).filter(function(x){return x.sc>0}).sort(function(a,b){return b.sc-a.sc}).slice(0,4);}
-var CRIT=["Intrigue","Émotion","Style"];
+var CRIT=["Intrigue","Émotion","Style"],IC={Intrigue:"🕵️ ",Émotion:"💗 ",Style:"✒️ "},CQ={Intrigue:["subject:thriller","subject:policier"],Émotion:["subject:romance","subject:drame"],Style:["subject:littérature","prix littéraire roman"]};
+function ovl(v){document.getElementById("ovv").textContent=f1(+v)+"/5"}
+function favCrit(rd){var hi=rd.filter(function(b){return avg(b)>=4&&Object.values(b.r).some(function(x){return x>0})});if(!hi.length)return null;var best=null,bm=0;CRIT.forEach(function(k){var L=hi.filter(function(b){return b.r[k]>0}),m=L.length?L.reduce(function(a,b){return a+b.r[k]},0)/L.length:0;if(m>bm){bm=m;best=k}});return bm>=3?best:null}
+function pear(x,y){var n=x.length;if(n<3)return 0;var mx=x.reduce(function(a,c){return a+c},0)/n,my=y.reduce(function(a,c){return a+c},0)/n,a=0,b=0,c=0;for(var i=0;i<n;i++){a+=(x[i]-mx)*(y[i]-my);b+=(x[i]-mx)*(x[i]-mx);c+=(y[i]-my)*(y[i]-my)}return b&&c?a/Math.sqrt(b*c):0}
 function sum(L,f){return L.reduce(function(a,b){return a+f(b)},0)}
 function mean(L,f){return L.length?sum(L,f)/L.length:0}
 function bar(l,v,mx,t){return'<div class="bar"><span>'+l+'</span><em><i style="--w:'+Math.round(v/mx*100)+'%"></i></em><b>'+t+'</b></div>'}
@@ -261,8 +269,11 @@ var mc=MOODS.map(function(m,i){return[m,rd.filter(function(b){return b.mood==i})
 var byA={};rd.forEach(function(b){byA[b.a]=(byA[b.a]||0)+1});var ta=Object.keys(byA).sort(function(a,b){return byA[b]-byA[a]})[0];
 var lg=rd.slice().sort(function(a,b){return b.p-a.p})[0],sh=rd.slice().sort(function(a,b){return a.p-b.p})[0];
 var ppd=function(b){return b.p/days(b.st,b.en)},fast=rd.slice().sort(function(a,b){return ppd(b)-ppd(a)})[0];
+var drv=CRIT.map(function(k){var L=rt.filter(function(b){return b.r[k]>0}),hi=L.filter(function(b){return b.r[k]>=4}),lo=L.filter(function(b){return b.r[k]<4});return{k:k,nh:hi.length,nl:lo.length,hi:hi.length?mean(hi,avg):0,lo:lo.length?mean(lo,avg):0}});
+var drvOK=drv.filter(function(x){return x.nh&&x.nl}).sort(function(a,b){return(b.hi-b.lo)-(a.hi-a.lo)});
 var I=[],bs=rt.slice().sort(function(a,b){return avg(b)-avg(a)});
-if(cm.length>1)I.push('Tu es plus généreuse sur <b>'+cm[0][0]+'</b> ('+f1(cm[0][1])+'/5) que sur <b>'+cm[cm.length-1][0]+'</b> ('+f1(cm[cm.length-1][1])+'/5).');
+if(drvOK.length)I.push('Tes notes globales montent surtout quand <b>'+drvOK[0].k+'</b> est forte : '+f1(drvOK[0].hi)+'★ en moyenne (jauge ≥ 4) contre '+f1(drvOK[0].lo)+'★ sinon. C’est ce qui guide tes recos.');
+if(cm.length>1)I.push('Ce qui te marque le plus : <b>'+cm[0][0]+'</b> ('+f1(cm[0][1])+'/5 en jauge), le moins : <b>'+cm[cm.length-1][0]+'</b> ('+f1(cm[cm.length-1][1])+'/5).');
 if(bs.length>1)I.push('Ton coup de cœur : <b>'+esc(bs[0].t)+'</b> ('+f1(avg(bs[0]))+'★). Le moins aimé : <b>'+esc(bs[bs.length-1].t)+'</b> ('+f1(avg(bs[bs.length-1]))+'★).');
 var gr=gl.filter(function(x){return x.m>0}).sort(function(a,b){return b.m-a.m});
 if(gr.length)I.push('Ton genre le mieux noté : <b>'+esc(gr[0].g)+'</b> ('+f1(gr[0].m)+'★ de moyenne)'+(gl[0]&&gl[0].g!=gr[0].g?', alors que tu lis surtout du <b>'+esc(gl[0].g)+'</b> ('+gl[0].n+' livres).':'.'));
@@ -281,7 +292,7 @@ var mxg=Math.max.apply(null,gl.map(function(x){return x.n}).concat([1])),mxm=Mat
 $(hd("Mon profil","mon petit bilan ♡")+'<div class="card" style="--r:-1deg"><div class="tape"></div><div class="row"><div class="cam" onclick="profSheet()"><div class="scr"'+(U.photo?' style="background:url('+U.photo+') center/cover"':'')+'>'+(U.photo?'':'📖')+'</div><i class="lens"></i></div><div><h2 style="margin:0">'+esc(U.name||"Mon carnet")+'</h2><button class="btn sm" onclick="profSheet()">✏️ Profil</button><div>'+n+' livre'+(n>1?'s':'')+' lu'+(n>1?'s':'')+' en 2026</div>'+(S.win?'<span class="stampbtn">🏆 Bingo complet</span>':'')+'</div></div></div>'+
 '<div class="dark"><small>pages lues en 2026</small><div class="big">'+pg+'</div><small>'+(n?'depuis le '+rd.map(function(b){return b.st}).filter(Boolean).sort()[0].split("-").reverse().join("/"):"")+'</small>'+st("lips","right:12px;top:-16px;width:50px;--r:12deg")+st("leo","left:-10px;bottom:-12px;width:34px;--r:-10deg")+'</div>'+
 '<div class="chips">'+[[n,"livres lus"],[pg,"pages"],[(rt.length?f1(mean(rt,avg)):"–"),"note moy."],[(dd?Math.round(pg/dd):0),"pages/jour"]].map(function(c,i){return'<div class="chip k'+i+'"><b>'+c[0]+'</b><span>'+c[1]+'</span></div>'}).join("")+'</div><h2>🔎 Mon analyse</h2><div class="posts">'+I.map(function(x,i){return'<div class="post p'+(i%4)+'" style="--r:'+(((i*37)%5)-2)+'deg"><i></i>'+x+'</div>'}).join("")+'</div>'+
-'<h2>⭐ Mes notes</h2><div class="card">'+(cm.length?cm.map(function(x){return bar(x[0],x[1],5,f1(x[1])+'/5')}).join("")+'<div class="muted" style="margin:8px 0 2px">Répartition des notes globales</div>'+dist.map(function(x){return bar(x[0]+'★',x[1],mxd,x[1])}).join(""):'<p class="muted">Note un livre lu pour voir tes moyennes.</p>')+'</div>'+
+'<h2>⭐ Mes notes</h2><div class="card">'+(rt.length?'<div class="muted">Jauges moyennes (ce qui te marque)</div>'+cm.map(function(x){return bar(x[0],x[1],5,f1(x[1])+'/5')}).join("")+'<div class="muted" style="margin:10px 0 2px">Ta note globale quand la jauge est forte (≥ 4)</div>'+drv.filter(function(x){return x.nh}).map(function(x){return bar(x.k,x.hi,5,f1(x.hi)+'★ ('+x.nh+')')}).join("")+'<div class="muted" style="margin:10px 0 2px">Répartition des notes globales</div>'+dist.map(function(x){return bar(x[0]+'★',x[1],mxd,x[1])}).join(""):'<p class="muted">Note un livre lu pour voir tes moyennes.</p>')+'</div>'+
 (gl.length?'<h2>📚 Mes genres</h2><div class="card">'+gl.map(function(x){return bar(esc(x.g),x.n,mxg,x.n+' · '+(x.m?f1(x.m)+'★':'–'))}).join("")+'</div>':"")+
 '<h2>📅 Mon année en lecture</h2><div class="card"><div class="muted">Nombre de livres terminés chaque mois de '+TODAY.slice(0,4)+'</div><div class="months">'+["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."].map(function(nm,i){var k=TODAY.slice(0,4)+"-"+("0"+(i+1)).slice(-2),v=M2[k]||0;return'<div class="mo'+(v?" on":"")+'" style="--r:'+(((i*7)%5)-2)+'deg"><span>'+nm+'</span><b>'+v+'</b></div>'}).join("")+'</div></div>'+
 '<h2>🧾 Mon bilan</h2><div class="ticket"><p><span>LIBRAIRIE DU CARNET</span><span>2026</span></p><p><span>Livres lus</span><span>'+n+'</span></p><p><span>Pages lues</span><span>'+pg+'</span></p><p><span>Pages / jour</span><span>'+(dd?Math.round(pg/dd):0)+'</span></p><p><span>Jours / livre</span><span>'+(n?f1(dd/n):0)+'</span></p><p><span>Pages / livre</span><span>'+(n?Math.round(pg/n):0)+'</span></p><p><span>Note moyenne</span><span>'+(rt.length?f1(mean(rt,avg)):'–')+' / 5</span></p>'+(lg?'<p><span>Le plus long</span><span>'+esc(lg.t)+' ('+lg.p+')</span></p><p><span>Le plus court</span><span>'+esc(sh.t)+' ('+sh.p+')</span></p>':"")+(ta?'<p><span>Auteur·rice le plus lu</span><span>'+esc(ta)+'</span></p>':"")+'<p><span>En cours / en pause</span><span>'+cnt("reading")+' / '+cnt("paused")+'</span></p><p><span>Dans la wishlist</span><span>'+cnt("wishlist")+'</span></p><p><span>Citations notées</span><span>'+sum(S.books,function(b){return b.q.length})+'</span></p></div>'+
@@ -310,7 +321,7 @@ function detail(id){var b=bk(id);SEL=id;
 sheet('<div class="row"><div class="bk" style="background:'+COL[b.c%8]+(b.img?' url('+b.img+') center/cover;color:transparent;text-shadow:none':'')+';height:120px;--r:-3deg;margin:0;flex:0 0 80px">'+esc(b.t)+'</div><div style="flex:3"><h2 style="margin:0">'+esc(b.t)+'</h2>'+esc(b.a)+' · '+b.p+' p.</div></div>'+
 '<select onchange="up('+id+',\'s\',this.value)">'+Object.keys(STAT).map(function(k){return'<option value="'+k+'"'+(b.s==k?" selected":"")+'>'+STAT[k]+'</option>'}).join("")+'</select>'+
 '<div class="row"><input type="date" value="'+b.st+'" onchange="up('+id+',\'st\',this.value)" aria-label="Début"><input type="date" value="'+b.en+'" onchange="up('+id+',\'en\',this.value)" aria-label="Fin"></div>'+
-Object.keys(b.r).map(function(k){return'<div class="row"><span style="flex:1">'+k+'</span><input style="flex:2" type="range" min="0" max="5" step=".5" value="'+b.r[k]+'" onchange="up('+id+',\'r.'+k+'\',this.value)"></div>'}).join("")+
+'<div class="card gold" style="--r:-1deg;margin:10px 0"><div class="row"><b style="flex:2;font-size:21px">⭐ Note globale</b><b id="ovv" style="font-size:24px">'+f1(b.ov||0)+'/5</b></div><input type="range" min="0" max="5" step=".5" value="'+(b.ov||0)+'" oninput="ovl(this.value)" onchange="up('+id+',\'ov\',+this.value)"></div><div class="muted">Jauges : ce qui t’a le plus marquée dans ce livre</div>'+Object.keys(b.r).map(function(k){return'<div class="row"><span style="flex:1">'+(IC[k]||"")+k+'</span><input style="flex:2" type="range" min="0" max="5" step=".5" value="'+b.r[k]+'" onchange="up('+id+',\'r.'+k+'\',this.value)"></div>'}).join("")+
 '<input placeholder="Une phrase pour résumer…" value="'+esc(b.one)+'" onchange="up('+id+',\'one\',this.value)">'+
 '<select onchange="up('+id+',\'mood\',+this.value)"><option value="-1">Humeur post-lecture…</option>'+MOODS.map(function(m,i){return'<option value="'+i+'"'+(b.mood===i?" selected":"")+'>'+m+'</option>'}).join("")+'</select>'+
 '<select onchange="up('+id+',\'fmt\',this.value);detail('+id+')"><option value="cassette">📼 Cassette</option><option value="vinyl"'+(b.fmt=="vinyl"?" selected":"")+'>💿 Vinyle</option></select><input placeholder="🎵 Bande originale du livre" value="'+esc(b.ost)+'" onchange="up('+id+',\'ost\',this.value);detail('+id+')">'+(b.ost?(b.fmt=="vinyl"?vinyl(b.ost):cass(b.ost)):"")+
