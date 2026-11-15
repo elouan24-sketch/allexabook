@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mon carnet de lectures</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Special+Elite&family=Kalam:wght@400;700&family=Gochi+Hand&family=Abril+Fatface&family=Bebas+Neue&family=Playfair+Display:ital,wght@1,900&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#fbf6ec;--ink:#3b2f2a;--card:#fffdf8;--kraft:#c9a97a;--rose:#e8a0b4;--sage:#9db89a;--mus:#e3b448;--sky:#8fb8d8;--wood:#9a6b3f;--red:#c0392b;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#2a2420;--ink:#f1e6d4;--card:#3a322c;--kraft:#7d6547;--wood:#6b4a2b}}
+:root[data-theme="dark"]{--paper:#2a2420;--ink:#f1e6d4;--card:#3a322c;--kraft:#7d6547;--wood:#6b4a2b}
+html,body{height:100%;margin:0}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background-color:var(--paper);color:var(--ink);font:500 17px 'Caveat','Comic Sans MS',cursive;
+background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/><feColorMatrix values='0 0 0 0 .4  0 0 0 0 .3  0 0 0 0 .2  0 0 0 .13 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+#app{max-width:480px;margin:0 auto;padding:14px 14px 96px}
+h1,h2{font-family:'Abril Fatface',Georgia,serif;font-weight:400;margin:6px 0 10px}
+h1{font-size:30px;transform:rotate(-1.5deg)}h1 span{background:var(--rose);color:#fff;padding:0 6px;display:inline-block;transform:rotate(2deg)}
+h2{font-size:22px}.mono{font-family:'Special Elite','Courier New',monospace;font-size:14px}
+.card{background:var(--card);border-radius:3px;padding:12px;margin:12px 0;box-shadow:0 1px 1px rgba(0,0,0,.12),0 6px 14px rgba(60,40,20,.18);transform:rotate(var(--r,0deg));position:relative}
+.tape{position:absolute;top:-10px;left:50%;width:70px;height:20px;margin-left:-35px;transform:rotate(-3deg);opacity:.85;mix-blend-mode:multiply;background:repeating-linear-gradient(45deg,var(--rose) 0 6px,#f6d3dd 6px 12px)}
+button,select,input{font:inherit;color:inherit}
+.btn{background:var(--mus);border:2px solid var(--ink);border-radius:8px;padding:8px 14px;min-height:44px;box-shadow:2px 3px 0 var(--ink);cursor:pointer;color:#3b2f2a}
+.btn.alt{background:var(--sage)}.btn.sm{min-height:36px;padding:4px 10px}
+input,select{background:var(--card);border:2px dashed var(--kraft);border-radius:6px;padding:8px;width:100%;min-height:44px;margin:4px 0}
+.seg{display:flex;gap:6px;margin:6px 0 12px}.seg button{flex:1;min-height:40px;border:2px solid var(--ink);border-radius:20px;background:var(--card)}.seg .on{background:var(--rose);color:#3b2f2a}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:space-around;align-items:flex-end;padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));background:var(--kraft);border-top:3px dashed var(--paper);z-index:5}
+nav button{background:none;border:0;font-size:14px;min-width:56px;min-height:48px;display:flex;flex-direction:column;align-items:center;gap:0;opacity:.7}
+nav button b{font-size:22px;font-weight:400}nav .on{opacity:1;transform:translateY(-4px) rotate(-3deg);background:var(--paper);border-radius:8px}
+nav .plus{background:var(--red);color:#fff;border-radius:50%;width:54px;height:54px;font-size:30px;opacity:1;border:3px solid var(--paper);margin-top:-18px;display:block;box-shadow:0 4px 8px rgba(0,0,0,.3)}
+.face{display:grid;grid-template-columns:repeat(3,1fr);gap:0 12px;grid-auto-rows:150px;background:repeating-linear-gradient(to bottom,transparent 0 136px,var(--wood) 136px 150px);padding:0 8px;border-radius:4px}
+.bk{height:128px;margin-top:8px;border-radius:2px 5px 5px 2px;padding:8px 6px;color:#fff;font:700 15px/1.05 'Abril Fatface',serif;box-shadow:-3px 0 0 rgba(0,0,0,.25) inset,3px 4px 6px rgba(0,0,0,.35);transform:rotate(var(--r,0deg));transform-origin:bottom;cursor:pointer;overflow:hidden;text-shadow:0 1px 2px rgba(0,0,0,.5);position:relative}
+.bk small{display:block;font:500 13px 'Caveat',cursive;margin-top:4px}
+.spines{display:flex;flex-wrap:wrap;align-content:flex-start;background:repeating-linear-gradient(to bottom,transparent 0 128px,var(--wood) 128px 140px);padding:0 8px;border-radius:4px}
+.sp{height:140px;display:flex;align-items:flex-end;cursor:pointer}
+.sp i{display:block;margin-bottom:12px;border-radius:2px;box-shadow:1px 0 3px rgba(0,0,0,.4);color:#fff;font:12px 'Special Elite',monospace;writing-mode:vertical-rl;text-orientation:mixed;padding:6px 0;overflow:hidden;white-space:nowrap;text-shadow:0 1px 1px rgba(0,0,0,.5)}
+.pin{position:absolute;top:2px;right:3px;font-size:16px}
+.week{position:relative;display:grid;grid-template-columns:repeat(7,1fr);min-height:68px;border-bottom:1px dotted var(--kraft)}
+.week div.d{font:12px 'Special Elite',monospace;padding:2px 3px;opacity:.7}
+.rib{position:absolute;height:15px;font:12px/15px 'Special Elite',monospace;padding:0 6px;overflow:hidden;white-space:nowrap;color:#3b2f2a;opacity:.9;mix-blend-mode:multiply;cursor:pointer;border-radius:2px;background-image:repeating-linear-gradient(45deg,transparent 0 5px,rgba(255,255,255,.35) 5px 10px)}
+.rib.p{outline:2px dashed var(--ink)}
+.dow{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;font-size:15px}
+.jar{border:4px solid rgba(143,184,216,.7);border-radius:20px 20px 40px 40px;padding:14px;min-height:170px;display:flex;flex-wrap:wrap;gap:6px;justify-content:center;background:rgba(143,184,216,.15)}
+.fold{background:#fff8dc;color:#3b2f2a;padding:4px 8px;font-size:15px;box-shadow:1px 2px 4px rgba(0,0,0,.3);transform:rotate(var(--r));clip-path:polygon(0 0,100% 0,100% 70%,80% 100%,0 100%)}
+.ticket{background:#fff;color:#222;font-family:'Special Elite','Courier New',monospace;font-size:15px;padding:14px;clip-path:polygon(0 0,100% 0,100% calc(100% - 8px),95% 100%,90% calc(100% - 8px),85% 100%,80% calc(100% - 8px),75% 100%,70% calc(100% - 8px),65% 100%,60% calc(100% - 8px),55% 100%,50% calc(100% - 8px),45% 100%,40% calc(100% - 8px),35% 100%,30% calc(100% - 8px),25% 100%,20% calc(100% - 8px),15% 100%,10% calc(100% - 8px),5% 100%,0 calc(100% - 8px))}
+.ticket p{display:flex;justify-content:space-between;margin:4px 0;border-bottom:1px dotted #999}
+.bingo{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+.cell{aspect-ratio:1;background:var(--card);border:1px solid var(--kraft);font:12px/1.05 'Special Elite',monospace;padding:3px;position:relative;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer;overflow:hidden}
+.cell.v::after{content:'VALIDÉ';position:absolute;color:var(--red);border:2px solid var(--red);font:700 9px 'Special Elite',monospace;padding:1px 2px;transform:rotate(-14deg);mix-blend-mode:multiply;filter:url(#ink);animation:stamp .35s cubic-bezier(.2,1.6,.4,1) both;background:rgba(255,255,255,.4)}
+@keyframes stamp{from{transform:scale(2.4) rotate(-14deg);opacity:0}}
+.sheet{position:fixed;inset:0;background:rgba(40,25,15,.55);z-index:10;display:flex;align-items:flex-end}
+.sheet>div{background:var(--paper);width:100%;max-width:480px;margin:0 auto;max-height:90%;overflow:auto;border-radius:18px 18px 0 0;padding:16px 16px calc(20px + env(safe-area-inset-bottom,0px));animation:up .25s ease-out}
+@keyframes up{from{transform:translateY(60%)}}
+.stampbtn{display:inline-block;border:2px solid var(--red);color:var(--red);font:12px 'Special Elite',monospace;padding:1px 6px;border-radius:4px;transform:rotate(-5deg);margin:2px}
+.quote{background:#efe8d8;color:#3b2f2a;padding:8px 10px;margin:8px 0;transform:rotate(var(--r));clip-path:polygon(0 4%,6% 0,20% 3%,40% 0,60% 3%,80% 0,100% 4%,98% 96%,80% 100%,60% 96%,40% 100%,20% 97%,0 100%)}
+.pol{background:#fff;padding:6px 6px 22px;box-shadow:0 4px 10px rgba(0,0,0,.3);display:inline-block;transform:rotate(-3deg)}
+.row{display:flex;gap:8px;align-items:center}.row>*{flex:1}.muted{opacity:.7;font-size:15px}
+.res{display:flex;gap:8px;align-items:center;padding:6px;border-bottom:1px dotted var(--kraft);cursor:pointer}.res img{width:36px;height:54px;object-fit:cover;box-shadow:1px 2px 4px rgba(0,0,0,.3)}
+
+:root{--paper:#f7c8d6;--line:rgba(80,30,50,.2)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#2a2024;--line:rgba(255,255,255,.1)}}
+:root[data-theme="dark"]{--paper:#2a2024;--line:rgba(255,255,255,.1)}
+body{background-image:repeating-linear-gradient(to bottom,transparent 0 26px,var(--line) 26px 27px,transparent 27px 31px,var(--line) 31px 32px,transparent 32px 36px,var(--line) 36px 37px,transparent 37px 41px,var(--line) 41px 42px,transparent 42px 46px,var(--line) 46px 47px,transparent 47px 120px),url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/><feColorMatrix values='0 0 0 0 .4  0 0 0 0 .3  0 0 0 0 .2  0 0 0 .13 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+#app{padding-left:34px}
+body::before{content:"";position:fixed;left:0;top:0;bottom:0;width:24px;z-index:4;background:repeating-linear-gradient(to bottom,transparent 0 6px,#111 6px 11px,transparent 11px 20px);border-radius:0 8px 8px 0}
+h2{font-family:'Special Elite','Courier New',monospace;background:#111;color:#fff;display:inline-block;padding:2px 10px;transform:rotate(-1.2deg);font-size:18px;margin:10px 0 8px;box-shadow:2px 3px 0 #e8668c}
+nav{background:#141414;border-top:0;box-shadow:0 -3px 0 #e8668c}nav button{color:#fff}nav .on{background:#e8668c;color:#111;border-radius:10px}
+nav .plus{background:#b3262e;color:#fff;border-color:#f6d243;box-shadow:0 0 0 3px #111,inset 0 0 8px #ff8a8a}
+.hd{position:relative;padding:8px 0 12px;min-height:64px}.rn{display:inline-block;padding:0 5px;margin:1px;line-height:1.25;box-shadow:1px 2px 3px rgba(0,0,0,.3)}
+.stk{position:absolute;filter:drop-shadow(1px 3px 3px rgba(0,0,0,.35));transform:rotate(var(--r,0deg));pointer-events:none}.stk svg{width:100%;height:auto;display:block}
+.strip{background:#111;color:#fff;height:15px;overflow:hidden;white-space:nowrap;font-size:10px;line-height:15px;letter-spacing:4px;margin-bottom:12px}
+.keys{height:30px;margin:16px 0;background:repeating-linear-gradient(90deg,#fff 0 22px,#111 22px 24px);border:2px solid #111;position:relative}
+.keys::after{content:"";position:absolute;left:0;right:0;top:0;height:60%;background:repeating-linear-gradient(90deg,transparent 0 15px,#111 15px 24px)}
+.dark{background:#141414;color:#fff;border-radius:12px;padding:12px 14px;font-family:'Special Elite',monospace}.dark small{opacity:.7;font-size:13px;display:block}.dark .big{font:700 40px 'Special Elite',monospace;color:#1ed760;line-height:1.1}
+.cam{flex:0 0 118px;position:relative;background:linear-gradient(#d7dade,#a4a8af);border-radius:10px;padding:8px;box-shadow:0 4px 8px rgba(0,0,0,.35);transform:rotate(-3deg)}
+.cam .scr{background:#e8668c;height:64px;display:flex;align-items:center;justify-content:center;font-size:34px;border:3px solid #333;border-radius:4px}
+.cam .lens{position:absolute;right:-8px;top:-8px;width:26px;height:26px;border-radius:50%;background:radial-gradient(circle,#222 0 30%,#888 32% 55%,#ddd 57%);box-shadow:0 2px 4px rgba(0,0,0,.4)}
+.spin{transform-box:fill-box;transform-origin:center;animation:sp 14s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
+
+body{font-size:19px}#app{padding-bottom:130px}
+@keyframes pop{from{opacity:0;transform:translateY(16px) rotate(1.5deg)}}
+#app>*{animation:pop .45s cubic-bezier(.2,.9,.3,1.2) both}#app>*:nth-child(3){animation-delay:.05s}#app>*:nth-child(4){animation-delay:.1s}#app>*:nth-child(n+5){animation-delay:.15s}
+button:active{transform:scale(.94)}
+.sub{font:700 22px 'Caveat',cursive;transform:rotate(-2deg);margin:4px 0 0 4px;display:inline-block;background:linear-gradient(transparent 62%,#f6d24399 62%)}
+.hd{min-height:84px}
+.btn{background:#f6d243;border:3px solid #fff;border-radius:999px;font:14px 'Special Elite',monospace;box-shadow:0 0 0 1.5px rgba(0,0,0,.12),2px 5px 9px rgba(0,0,0,.3);transform:rotate(-1.5deg)}
+.btn.alt{background:repeating-linear-gradient(45deg,#9db89a 0 6px,#b9d2b5 6px 12px);border:0;border-radius:3px}
+.seg button{border:0;border-radius:12px 12px 0 0;background:var(--kraft);color:#3b2f2a;font:14px 'Special Elite',monospace;box-shadow:inset 0 -3px 0 rgba(0,0,0,.18)}
+.seg button:nth-child(odd){transform:rotate(-1.5deg)}.seg button:nth-child(even){transform:rotate(1deg)}
+.seg .on{background:#e8668c;color:#fff;transform:translateY(-3px);box-shadow:0 4px 8px rgba(0,0,0,.25)}
+input,select{border:0;border-bottom:2px solid var(--ink);border-radius:2px 2px 0 0;background:rgba(255,253,248,.75);font-size:19px}
+input:focus,select:focus{outline:0;background:linear-gradient(transparent 55%,#f6d24377 55%),rgba(255,253,248,.75)}input[type=range]{accent-color:#c0392b;border:0;background:none}
+.card{background-image:repeating-linear-gradient(to bottom,transparent 0 27px,rgba(70,100,160,.12) 27px 28px)}
+.face{background:repeating-linear-gradient(to bottom,transparent 0 136px,#b98349 136px 138px,#8a5a30 138px 150px)}
+.spines{background:repeating-linear-gradient(to bottom,transparent 0 128px,#b98349 128px 130px,#8a5a30 130px 140px)}
+.bk::before{content:"";position:absolute;top:0;left:50%;width:30px;height:11px;margin-left:-15px;transform:rotate(-5deg);opacity:.85;background:repeating-linear-gradient(45deg,#f4b6c8 0 5px,#fbd9e3 5px 10px)}
+.rib{clip-path:polygon(0 0,100% 0,98% 25%,100% 50%,98% 75%,100% 100%,0 100%,2% 75%,0 50%,2% 25%)}
+.rib.w1{background-image:radial-gradient(circle,rgba(255,255,255,.75) 2px,transparent 3px);background-size:9px 9px}
+.rib.w2{background-image:linear-gradient(90deg,rgba(255,255,255,.45) 50%,transparent 50%),linear-gradient(rgba(255,255,255,.45) 50%,transparent 50%);background-size:10px 10px}
+.d.t{background:radial-gradient(circle at 14px 11px,#c0392b 0 10px,transparent 11px);color:#fff;opacity:1}
+.sheet>div{border-radius:24px 24px 0 0;padding-top:34px;background-color:var(--paper)}
+.sheet>div::before{content:"";position:absolute;top:8px;left:50%;width:90px;height:20px;margin-left:-45px;transform:rotate(-2deg);background:repeating-linear-gradient(45deg,#e3b448 0 6px,#f3d98a 6px 12px);opacity:.9}
+.sheet>div{position:relative}
+nav{background-color:var(--kraft);background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/><feColorMatrix values='0 0 0 0 .4  0 0 0 0 .3  0 0 0 0 .2  0 0 0 .13 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");border-top:0;padding:18px 6px calc(8px + env(safe-area-inset-bottom,0px));box-shadow:0 -5px 12px rgba(0,0,0,.25)}
+nav::before{content:"";position:absolute;left:0;right:0;top:-7px;height:7px;background:linear-gradient(135deg,var(--kraft) 25%,transparent 25%) -7px 0/14px 14px,linear-gradient(225deg,var(--kraft) 25%,transparent 25%) -7px 0/14px 14px}
+nav::after{content:"";position:absolute;left:10px;right:10px;top:8px;border-top:2px dashed rgba(255,255,255,.75);pointer-events:none}
+nav button{position:relative;opacity:1;color:#3b2f2a;font:11px 'Special Elite',monospace;gap:4px;background:none;min-width:58px}
+nav button b{width:42px;height:42px;border-radius:50%;border:3px solid #fff;display:flex;align-items:center;justify-content:center;font-size:21px;box-shadow:0 3px 6px rgba(0,0,0,.35);transform:rotate(var(--t,-6deg))}
+nav button:nth-child(1) b{background:#f6d243;--t:-8deg}nav button:nth-child(2) b{background:#8fb8d8;--t:5deg}nav button:nth-child(4) b{background:#cfe3d4;--t:-5deg}nav button:nth-child(5) b{background:#e8668c;--t:7deg}
+nav u{text-decoration:none;background:#fffdf8;padding:0 5px;box-shadow:1px 2px 3px rgba(0,0,0,.25);transform:rotate(-2deg)}
+nav button.on{background:none;color:#3b2f2a;transform:translateY(-8px)}nav button.on b{transform:rotate(0) scale(1.18)}
+nav button.on::before{content:"";position:absolute;top:-9px;left:50%;width:34px;height:12px;margin-left:-17px;transform:rotate(-8deg);opacity:.9;z-index:1;background:repeating-linear-gradient(45deg,#e8668c 0 5px,#f6c0d0 5px 10px)}
+nav .plus{width:62px;height:62px;min-width:0;min-height:0;padding:0;margin-top:-30px;border-radius:50%;border:4px solid #fff;color:#fff;font:400 36px/1 'Abril Fatface',serif;transform:rotate(-8deg);background:radial-gradient(circle at 30% 26%,#ffb3b3 0 7%,transparent 8%),radial-gradient(circle,#d93a2b,#a8232e);box-shadow:0 6px 12px rgba(0,0,0,.4)}
+
+.cv{width:64px;height:96px;object-fit:cover;flex:0 0 64px;box-shadow:2px 4px 8px rgba(0,0,0,.35);transform:rotate(-3deg);background:var(--kraft)}
+.bar{display:flex;align-items:center;gap:8px;margin:5px 0}.bar span{flex:0 0 92px;font-size:17px}.bar b{flex:0 0 auto;min-width:44px;text-align:right;font:13px 'Special Elite',monospace}
+.bar em{flex:1;height:13px;background:rgba(0,0,0,.09);border-radius:7px;overflow:hidden}.bar em i{display:block;height:100%;width:var(--w);background:repeating-linear-gradient(45deg,#e8668c 0 6px,#f6c0d0 6px 12px)}
+.cell input{min-height:0;height:100%;padding:1px;margin:0;font:11px/1.05 'Special Elite',monospace;text-align:center;border:0;background:transparent}
+.cell.e{cursor:text;outline:1px dashed var(--kraft)}
+.card.gold{background:linear-gradient(135deg,#fff3b0,#f6d243);color:#3b2f2a;text-align:center}
+.cf{position:absolute;top:-14px;width:8px;height:14px;animation:fall 2.6s linear infinite}@keyframes fall{to{transform:translateY(520px) rotate(540deg)}}
+
+body[data-t=shelf]{background-color:#d8b98a;background-image:radial-gradient(ellipse at 50% 0,rgba(255,255,255,.4),transparent 60%),repeating-linear-gradient(90deg,rgba(120,80,40,.08) 0 2px,transparent 2px 16px),url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/><feColorMatrix values='0 0 0 0 .4  0 0 0 0 .3  0 0 0 0 .2  0 0 0 .13 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+body[data-t=cal]{background-color:#f4efe2;background-size:24px 24px,24px 24px,auto;background-image:linear-gradient(rgba(70,110,170,.22) 1px,transparent 1px),linear-gradient(90deg,rgba(70,110,170,.22) 1px,transparent 1px),url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/><feColorMatrix values='0 0 0 0 .4  0 0 0 0 .3  0 0 0 0 .2  0 0 0 .13 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+body[data-t=wish]{background-color:#cfe3f2;background-size:22px 22px,auto;background-image:radial-gradient(rgba(40,80,130,.38) 1.6px,transparent 2.2px),url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/><feColorMatrix values='0 0 0 0 .4  0 0 0 0 .3  0 0 0 0 .2  0 0 0 .13 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body[data-t=shelf]{background-color:#4a3826}:root:not([data-theme="light"]) body[data-t=cal]{background-color:#2e2b26}:root:not([data-theme="light"]) body[data-t=wish]{background-color:#1f2f3d}}
+:root[data-theme="dark"] body[data-t=shelf]{background-color:#4a3826}:root[data-theme="dark"] body[data-t=cal]{background-color:#2e2b26}:root[data-theme="dark"] body[data-t=wish]{background-color:#1f2f3d}
+body[data-t=cal] h2{box-shadow:2px 3px 0 #8fb8d8}body[data-t=wish] h2{box-shadow:2px 3px 0 #f6d243}body[data-t=shelf] h2{box-shadow:2px 3px 0 #b3262e}
+.dark{position:relative}
+.chips{display:flex;gap:8px;margin:18px 0 6px}.chip{flex:1;aspect-ratio:1;border-radius:50%;border:3px solid #fff;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 4px 8px rgba(0,0,0,.3);color:#3b2f2a;text-align:center;line-height:1.05}
+.chip b{font:400 22px 'Abril Fatface',serif}.chip span{font:10px 'Special Elite',monospace}.k0{background:#f6d243;transform:rotate(-6deg)}.k1{background:#8fb8d8;transform:rotate(4deg)}.k2{background:#e8668c;color:#fff;transform:rotate(7deg)}.k3{background:#9db89a;transform:rotate(-4deg)}
+.posts{display:grid;gap:16px;margin:14px 0}.post{position:relative;padding:16px 14px 12px;font:700 20px/1.15 'Caveat',cursive;color:#3b2f2a;transform:rotate(var(--r));box-shadow:2px 6px 10px rgba(0,0,0,.25)}
+.post i{position:absolute;top:-9px;left:50%;width:46px;height:16px;margin-left:-23px;transform:rotate(-3deg);opacity:.85;background:repeating-linear-gradient(45deg,#e8668c 0 5px,#f6c0d0 5px 10px)}
+.p0{background:#fff3a3}.p1{background:#ffd1dc}.p2{background:#cfe8ff}.p3{background:#d6f0c8}
+.months{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}.mo{border:2px dashed var(--kraft);padding:4px;text-align:center;transform:rotate(var(--r));opacity:.65}
+.mo.on{opacity:1;background:#f6d243;border:2px solid #fff;box-shadow:1px 3px 6px rgba(0,0,0,.25);color:#3b2f2a}.mo span{display:block;font:11px 'Special Elite',monospace}.mo b{font:400 24px 'Abril Fatface',serif}
+.bcard{background:var(--card);padding:14px;border-radius:6px;box-shadow:0 6px 14px rgba(60,40,20,.25);border:3px double var(--red);position:relative;transform:rotate(-.6deg);margin:10px 0}
+.bingo{gap:6px}.cell{font:700 13px/1 'Caveat',cursive;border:0;box-shadow:1px 3px 5px rgba(0,0,0,.22);transform:rotate(var(--r,0deg));color:#3b2f2a}
+.cell.c0{background:#fff3a3}.cell.c1{background:#ffd1dc}.cell.c2{background:#cfe8ff}.cell.c3{background:#d6f0c8}.cell.c4{background:#fde0c5}
+.cell.v:nth-child(even)::after{color:#1e8449;border-color:#1e8449}
+input,select,textarea{font-family:'Kalam','Caveat',cursive;font-weight:700;font-size:18px;letter-spacing:.2px}
+input::placeholder{font-family:'Gochi Hand','Kalam',cursive;font-weight:400;opacity:.55;font-size:19px}
+.cell input{font:11px/1.05 'Special Elite',monospace}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute"><filter id="ink"><feTurbulence baseFrequency=".9" numOctaves="2" result="t"/><feDisplacementMap in="SourceGraphic" in2="t" scale="2"/></filter></svg>
+<div id="app"></div><nav id="nav"></nav><div id="modal"></div>
+<script>
+var TODAY="2026-11-14",COL=["#b5495b","#4a7c8c","#7a8f4e","#8a5a9e","#c0763a","#3f5f8a","#a34a3a","#5d7a6a"];
+var WASHI=["#e8a0b4","#9db89a","#e3b448","#8fb8d8","#d9a1e0","#f4b183"];
+var MOODS=["Cerveau retourné 🤯","En pleurs sous la couette 😭","Le cœur léger ☁️","Envie de relire 🔁","Un peu déçue 😕"];
+var STAMPS=["Poétique","Plot twist de fou","Coup de cœur"];
+var STAT={read:"Lu",reading:"En cours",paused:"En pause",wishlist:"Wishlist"};
+var CAND=[{t:"Le Meilleur des mondes",a:"Aldous Huxley",g:"Dystopie"},{t:"Les Garçons de la mer",a:"Marie Rouanet",g:"Roman"},{t:"Les Heures",a:"Michael Cunningham",g:"Roman"},{t:"Station Eleven",a:"Emily St. John Mandel",g:"Dystopie"},{t:"Le Pays des autres",a:"Leïla Slimani",g:"Roman"},{t:"Misery",a:"Stephen King",g:"Thriller"},{t:"Sa Majesté des mouches",a:"William Golding",g:"Dystopie"},{t:"Chanson douce",a:"Leïla Slimani",g:"Thriller"}];
+var DEF={books:[
+{id:1,t:"1984",a:"George Orwell",p:438,g:"Dystopie",c:0,s:"read",st:"2026-09-20",en:"2026-10-06",r:{Intrigue:4.5,Émotion:4,Style:4},one:"Glaçant et terriblement actuel.",mood:0,q:[{x:"Big Brother vous regarde.",k:"Plot twist de fou"}],ost:"Radiohead – 2+2=5"},
+{id:2,t:"Normal People",a:"Sally Rooney",p:288,g:"Roman",c:1,s:"read",st:"2026-10-08",en:"2026-10-15",r:{Intrigue:3,Émotion:5,Style:4},one:"Deux êtres qui se ratent et se retrouvent.",mood:1,q:[],ost:"Phoebe Bridgers – Funeral"},
+{id:3,t:"Chanson douce",a:"Leïla Slimani",p:224,g:"Thriller",c:2,s:"read",st:"2026-10-17",en:"2026-10-22",r:{Intrigue:4.5,Émotion:3.5,Style:4.5},one:"Une claque dès la première page.",mood:0,q:[],ost:""},
+{id:4,t:"Le Petit Prince",a:"Antoine de Saint-Exupéry",p:96,g:"Roman",c:3,s:"read",st:"2026-10-24",en:"2026-10-26",r:{Intrigue:3,Émotion:5,Style:5},one:"Toujours aussi tendre.",mood:2,q:[{x:"On ne voit bien qu’avec le cœur.",k:"Poétique"}],ost:""},
+{id:5,t:"Dune",a:"Frank Herbert",p:896,g:"Dystopie",c:4,s:"reading",st:"2026-10-30",en:"",r:{Intrigue:4,Émotion:3,Style:3.5},one:"",mood:-1,q:[],ost:""},
+{id:6,t:"Rebecca",a:"Daphné du Maurier",p:512,g:"Thriller",c:5,s:"paused",st:"2026-11-02",en:"",r:{Intrigue:0,Émotion:0,Style:0},one:"",mood:-1,q:[],ost:""},
+{id:7,t:"Les Heures",a:"Michael Cunningham",p:240,g:"Roman",c:6,s:"wishlist",st:"",en:"",r:{Intrigue:0,Émotion:0,Style:0},one:"",mood:-1,q:[],ost:""},
+{id:8,t:"Misery",a:"Stephen King",p:368,g:"Thriller",c:7,s:"wishlist",st:"",en:"",r:{Intrigue:0,Émotion:0,Style:0},one:"",mood:-1,q:[],ost:""}],
+bingo:["Couverture bleue","< 200 pages","Un classique","Premier roman","Livre offert","Un thriller","Auteur·rice français·e","Adapté en film","Un livre d’1 jour","Lu en voyage","Un coup de cœur","Un poche","Titre d’1 mot","Un livre triste","Une dystopie","Un livre drôle","Un prix littéraire","Une BD","Recommandé par une amie","Lu à voix haute","Couverture rose","Une saga","Un livre de poésie","Un récit vrai","Plus de 600 pages"],
+done:[1,14,2,4,10]};
+var API="https://www.googleapis.com/books/v1/volumes",KEY="AIzaSyD9Ma-plVLrSZobSzh-cdE3OPv4knLtCng",RECS,RLOAD=false,RERR=false,RL=[],RES=[],PK={};
+function KQ(){return KEY?"&key="+KEY:""}
+function norm(i){var v=i.volumeInfo||{},im=(v.imageLinks&&(v.imageLinks.thumbnail||v.imageLinks.smallThumbnail)||"").replace("http:","https:").replace("&edge=curl","").replace("zoom=1","zoom=2");return{gid:i.id,r:v.averageRating||0,t:v.title||"?",a:(v.authors||["?"])[0],p:v.pageCount||250,g:((v.categories||["Roman"])[0]||"Roman").split(" / ")[0],img:im}}
+async function srch(){var q=document.getElementById("nq").value.trim(),o=document.getElementById("rs");if(!q)return;o.innerHTML='<p class="muted">Recherche…</p>';
+if(/^[\d-]{10,17}$/.test(q))q="isbn:"+q.replace(/-/g,"");
+try{var r=await fetch(API+"?q="+encodeURIComponent(q)+"&maxResults=8&printType=books&langRestrict=fr"+KQ());if(!r.ok)throw 0;var j=await r.json();RES=(j.items||[]).map(norm).filter(function(b,i,a){return a.findIndex(function(x){return x.t.toLowerCase()==b.t.toLowerCase()})==i});
+o.innerHTML=RES.length?RES.map(function(b,i){return'<div class="res" onclick="pickRes('+i+')">'+(b.img?'<img src="'+esc(b.img)+'" alt="">':'')+'<div><b>'+esc(b.t)+'</b><div class="muted">'+esc(b.a)+' · '+b.p+' p.</div></div></div>'}).join(""):'<p class="muted">Aucun résultat.</p>'}
+catch(e){o.innerHTML='<p class="muted">Recherche indisponible (hors ligne, quota ou accès bloqué). Tu peux saisir à la main.</p>'}}
+function pickRes(i){PK=RES[i];document.getElementById("nt").value=PK.t;document.getElementById("na").value=PK.a;document.getElementById("np").value=PK.p;document.getElementById("rs").innerHTML='<div class="row" style="align-items:flex-start">'+(PK.img?'<img class="cv" src="'+esc(PK.img)+'" alt="">':"")+'<p class="muted" style="flex:2">✓ '+esc(PK.t)+' sélectionné</p></div>'}
+async function loadRecs(){RLOAD=true;RERR=false;var rd=S.books.filter(function(b){return b.s=="read"&&avg(b)>0}),A={},G={};
+rd.forEach(function(b){var w=avg(b)-3;(A[b.a]=A[b.a]||[]).push(w);(G[b.g]=G[b.g]||[]).push(w)});
+function sc(M){var o={};for(var k in M)o[k]=M[k].reduce(function(a,c){return a+c},0)/M[k].length;return o}
+var as=sc(A),gs=sc(G);function top(o){return Object.keys(o).filter(function(k){return o[k]>0}).sort(function(a,b){return o[b]-o[a]}).slice(0,3)}
+var ta=top(as),qs=ta.map(function(a){return['inauthor:"'+a+'"',a]}).concat(top(gs).map(function(g){return['subject:"'+g+'"',g]})),
+have=S.books.map(function(b){return b.t.toLowerCase()}),gids=S.books.map(function(b){return b.gid});
+var fav=favCrit(rd);if(fav)CQ[fav].forEach(function(q){qs.push([q,fav,"c"])});
+if(!qs.length){RECS=[];RLOAD=false;if(T=="wish")render();return}
+try{var res=await Promise.all(qs.map(function(q){return fetch(API+"?q="+encodeURIComponent(q[0])+"&maxResults=10&printType=books&langRestrict=fr"+KQ()).then(function(r){if(!r.ok)throw 0;return r.json()})}));
+var out=[],seen={};res.forEach(function(j,qi){var isA=qi<ta.length,lb=qs[qi][1];(j.items||[]).forEach(function(it){var c=norm(it),k=c.t.toLowerCase();
+if(have.indexOf(k)>=0||gids.indexOf(c.gid)>=0||seen[k]||(as[c.a]!==undefined&&as[c.a]<0))return;seen[k]=1;
+var cr=qs[qi][2]=="c",v=isA?as[lb]:gs[lb],s2=(cr?2.5:isA?v*3+3:v*2+1)+(as[c.a]||0)*3+(c.r||0)/5;
+out.push({c:c,sc:s2,why:{t:lb},reason:cr?'Tes meilleures notes vont aux livres où '+lb+' est forte':isA?'Tu notes '+f1(v+3)+'★ en moyenne les livres de '+lb:'Le genre « '+lb+' » te réussit : '+f1(v+3)+'★ de moyenne'})})});
+RECS=out.sort(function(a,b){return b.sc-a.sc}).slice(0,8)}catch(e){RERR=true;RECS=recs()}
+RLOAD=false;if(T=="wish")render()}
+function f1(x){return(Math.round(x*10)/10).toString().replace(".",",")}
+function auto(){var rd=S.books.filter(function(b){return b.s=="read"}),R={"< 200 pages":function(b){return b.p<200},"Plus de 600 pages":function(b){return b.p>600},"Un thriller":function(b){return b.g=="Thriller"},"Une dystopie":function(b){return b.g=="Dystopie"},"Un livre triste":function(b){return b.mood==1},"Un coup de cœur":function(b){return avg(b)>=4.5},"Un livre d’1 jour":function(b){return b.en&&days(b.st,b.en)<=1},"Titre d’1 mot":function(b){return b.t.trim().split(/\s+/).length==1}};
+S.bingo.forEach(function(l,i){var f=R[l];if(f&&rd.some(f)&&S.done.indexOf(i)<0&&(S.off||[]).indexOf(i)<0)S.done.push(i)});save()}
+var RF=["'Abril Fatface',serif","'Special Elite',monospace","'Bebas Neue',Impact,sans-serif","'Playfair Display',Georgia,serif","'Caveat',cursive"],RB=[["#111","#fff"],["#fff","#111"],["#f6d243","#111"],["#e8668c","#fff"],["#b3262e","#fff"],["#c9a97a","#111"],["#cfe3d4","#111"]];
+function R(t){var o="",k=0;for(var i=0;i<t.length;i++){var ch=t[i];if(ch==" "){o+=" ";continue}k+=7;var c=RB[(k*3)%7];o+='<span class="rn" style="font-family:'+RF[k%5]+';background:'+c[0]+';color:'+c[1]+';transform:rotate('+(((k*13)%9)-4)+'deg);font-size:'+(26+(k%4)*3)+'px">'+esc(ch)+'</span>'}return o}
+var STK={red:'<svg viewBox="0 0 100 100"><polygon points="50,6 62,38 96,38 68,58 78,92 50,71 22,92 32,58 4,38 38,38" fill="#a8323e" stroke="#f3d9c0" stroke-width="3" stroke-dasharray="5 4" stroke-linejoin="round"/></svg>',
+leo:'<svg viewBox="0 0 100 100"><polygon points="50,6 62,38 96,38 68,58 78,92 50,71 22,92 32,58 4,38 38,38" fill="#d2a05a"/><g fill="#4a2c17"><circle cx="40" cy="42" r="5"/><circle cx="58" cy="50" r="4"/><circle cx="48" cy="66" r="5"/><circle cx="72" cy="40" r="3"/><circle cx="30" cy="56" r="3"/></g></svg>',
+bolt:'<svg viewBox="0 0 100 100"><polygon points="58,4 20,56 46,56 36,96 80,38 54,38" fill="#d93a2b" stroke="#fff" stroke-width="4" stroke-linejoin="round"/></svg>',
+lips:'<svg viewBox="0 0 100 100"><path d="M6 52 Q30 28 50 42 Q70 28 94 52 Q70 84 50 82 Q30 84 6 52Z" fill="#c4232f"/><path d="M10 52 Q50 62 90 52" stroke="#7a1018" stroke-width="3" fill="none"/></svg>'};
+function st(k,c){return'<span class="stk" style="'+c+'">'+STK[k]+'</span>'}
+function hd(t,u){return'<div class="hd">'+R(t)+(u?'<div class="sub">'+u+'</div>':"")+st("red","right:4px;top:-4px;width:46px;--r:14deg")+st("leo","right:52px;top:28px;width:34px;--r:-14deg")+st("bolt","right:96px;top:-2px;width:26px;--r:10deg")+'</div><div class="strip">'+new Array(70).join("★ ")+'</div>'}
+function vinyl(t){var x=esc(t.length>22?t.slice(0,21)+"…":t);return'<svg viewBox="0 0 160 160" width="170" style="display:block;margin:8px auto"><g class="spin"><circle cx="80" cy="80" r="76" fill="#161616"/><circle cx="80" cy="80" r="62" fill="none" stroke="#333"/><circle cx="80" cy="80" r="52" fill="none" stroke="#333"/><circle cx="80" cy="80" r="42" fill="none" stroke="#333"/><path d="M80 80 L150 40 A80 80 0 0 1 156 70Z" fill="#fff" opacity=".07"/><circle cx="80" cy="80" r="27" fill="#f6d243"/><text x="80" y="76" text-anchor="middle" font-family="Caveat,cursive" font-size="12" fill="#111">'+x+'</text><text x="80" y="90" text-anchor="middle" font-size="8" fill="#111" font-family="Special Elite,monospace">STEREO</text><circle cx="80" cy="80" r="3" fill="#161616"/></g></svg>'}
+function cass(t){var x=esc(t.length>26?t.slice(0,25)+"…":t);return'<svg viewBox="0 0 200 124" width="210" style="display:block;margin:8px auto;transform:rotate(-2deg)"><rect x="2" y="2" width="196" height="120" rx="8" fill="#d9c9a8" stroke="#3b2f2a" stroke-width="3"/><rect x="16" y="12" width="168" height="48" rx="4" fill="#fffdf8" stroke="#3b2f2a"/><text x="100" y="42" text-anchor="middle" font-family="Caveat,cursive" font-size="20" fill="#c0392b">'+x+'</text><rect x="50" y="72" width="100" height="30" rx="15" fill="#3b2f2a"/><circle cx="76" cy="87" r="10" fill="#fffdf8"/><circle cx="124" cy="87" r="10" fill="#fffdf8"/><circle cx="76" cy="87" r="4" fill="#3b2f2a"/><circle cx="124" cy="87" r="4" fill="#3b2f2a"/></svg>'}
+var S;try{S=JSON.parse(localStorage.getItem("carnet-v1"))}catch(e){}
+if(!S||!S.books)S=JSON.parse(JSON.stringify(DEF));
+S.books.forEach(function(b){if(b.ov==null){var v=Object.values(b.r||{}).filter(function(x){return x>0});b.ov=v.length?Math.round(v.reduce(function(a,c){return a+c},0)/v.length*2)/2:0}});
+var BE=false,T="shelf",V="face",M={y:2026,m:10},SORT="note",F="all",SEL=0;
+function save(){try{localStorage.setItem("carnet-v1",JSON.stringify(S))}catch(e){}}
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function tilt(id){return(((id*37)%70)-35)/10}
+function bk(id){return S.books.filter(function(b){return b.id==id})[0]}
+function avg(b){return b.ov||0}
+function days(a,b){return Math.round((Date.parse(b)-Date.parse(a))/864e5)+1}
+function $(h){document.getElementById("app").innerHTML=h}
+function setT(t){T=t;render()}
+function render(){
+var tabs=[["shelf","📚","Étagère"],["cal","📅","Calendrier"],["add","+",""],["wish","🫙","Wishlist"],["me","👤","Profil"]];
+document.getElementById("nav").innerHTML=tabs.map(function(t){return t[0]=="add"?'<button class="plus" onclick="addSheet()" aria-label="Ajouter">+</button>':'<button class="'+(T==t[0]?"on":"")+'" onclick="setT(\''+t[0]+'\')"><b>'+t[1]+'</b><u>'+t[2]+'</u></button>'}).join("");
+document.body.setAttribute("data-t",T);({shelf:shelf,cal:cal,wish:wish,me:me})[T]();}
+function shelf(){
+var L=S.books.filter(function(b){return b.s!="wishlist"&&(F=="all"||b.s==F)});
+var seg='<div class="seg">'+[["face","Face"],["spine","Tranche"]].map(function(x){return'<button class="'+(V==x[0]?"on":"")+'" onclick="V=\''+x[0]+'\';render()">'+x[1]+'</button>'}).join("")+'</div>';
+var fl='<div class="seg">'+[["all","Tout"],["read","Lu"],["reading","En cours"],["paused","En pause"]].map(function(x){return'<button class="'+(F==x[0]?"on":"")+'" onclick="F=\''+x[0]+'\';render()">'+x[1]+'</button>'}).join("")+'</div>';
+var h;
+if(V=="face")h='<div class="face">'+L.map(function(b){return'<div class="bk" style="background:'+COL[b.c%8]+(b.img?' url('+b.img+') center/cover;color:transparent;text-shadow:none':'')+';--r:'+tilt(b.id)+'deg" onclick="detail('+b.id+')">'+(b.s=="paused"?'<span class="pin">📎</span>':"")+esc(b.t)+'<small>'+esc(b.a)+'</small></div>'}).join("")+'</div>';
+else h='<div class="spines">'+L.map(function(b){return'<div class="sp" onclick="detail('+b.id+')"><i style="background:'+COL[b.c%8]+';width:'+Math.max(20,Math.min(44,b.p/16))+'px;height:'+(88+(b.p%5)*8)+'px">'+esc(b.t)+'</i></div>'}).join("")+'</div>';
+$(hd("Mon carnet",(S.user&&S.user.name?"le carnet de "+esc(S.user.name)+" ✿":"mes lectures 2026 ✿"))+seg+fl+(L.length?h:'<p class="muted">Rien ici pour l’instant…</p>'));}
+function cal(){
+var y=M.y,m=M.m,nm=new Date(Date.UTC(y,m,1)).toLocaleDateString("fr-FR",{month:"long",year:"numeric",timeZone:"UTC"});
+var off=(new Date(Date.UTC(y,m,1)).getUTCDay()+6)%7,dim=new Date(Date.UTC(y,m+1,0)).getUTCDate(),nw=Math.ceil((off+dim)/7);
+var R=S.books.filter(function(b){return b.st});
+var h=hd("Calendrier","mes lectures, jour après jour")+'<div class="row"><button class="btn sm" onclick="mv(-1)">‹</button><h2 style="text-align:center;margin:0;text-transform:capitalize">'+nm+'</h2><button class="btn sm" onclick="mv(1)">›</button></div><div class="dow mono" style="margin-top:10px">'+"LMMJVSD".split("").map(function(x){return"<span>"+x+"</span>"}).join("")+'</div>';
+for(var w=0;w<nw;w++){var ws=w*7-off+1,we=ws+6,lane=0,rb="",cells="";
+for(var c=0;c<7;c++){var d=ws+c;cells+='<div class="d'+(d==+TODAY.slice(8)&&m==+TODAY.slice(5,7)-1&&y==+TODAY.slice(0,4)?" t":"")+'">'+(d>=1&&d<=dim?d:"")+'</div>'}
+R.forEach(function(b){var e=b.en||TODAY,ds=Math.round((Date.parse(b.st)-Date.UTC(y,m,1))/864e5)+1,de=Math.round((Date.parse(e)-Date.UTC(y,m,1))/864e5)+1;
+if(de<ws||ds>we)return;var a=Math.max(ds,ws),z=Math.min(de,we);
+rb+='<div class="rib w'+(b.c%3)+(b.s=="paused"?" p":"")+'" style="left:'+((a-ws)/7*100)+'%;width:'+((z-a+1)/7*100)+'%;top:'+(22+lane*17)+'px;background-color:'+WASHI[b.c%6]+'" onclick="detail('+b.id+')">'+(b.s=="paused"?"📎 ":"")+esc(b.t)+'</div>';lane++});
+h+='<div class="week">'+cells+rb+'</div>'}
+$(h+'<p class="muted">Chaque ruban = une lecture, du premier au dernier jour.</p>');}
+function mv(n){M.m+=n;if(M.m<0){M.m=11;M.y--}if(M.m>11){M.m=0;M.y++}render()}
+var PICK=null;
+function coverGrid(L){return'<div class="face">'+L.map(function(b){return'<div class="bk" style="background:'+COL[b.c%8]+(b.img?' url('+b.img+') center/cover;color:transparent;text-shadow:none':'')+';--r:'+tilt(b.id)+'deg" onclick="detail('+b.id+')">'+esc(b.t)+'<small>'+esc(b.a)+'</small></div>'}).join("")+'</div>'}
+function recCard(x,i){return'<div class="card" style="--r:'+tilt(x.c.t.length)+'deg"><div class="tape" style="background:'+WASHI[i%6]+'"></div><div class="row" style="align-items:flex-start;gap:10px">'+(x.c.img?'<img class="cv" src="'+esc(x.c.img)+'" alt="">':'<div class="cv" style="background:'+COL[i%8]+'"></div>')+'<div style="flex:3"><b>'+esc(x.c.t)+'</b><div class="muted">'+esc(x.c.a)+(x.c.p?' · '+x.c.p+' p.':'')+'</div><div>💡 '+esc(x.reason||'Parce que tu as aimé « '+(x.why&&x.why.t)+' »')+'</div><button class="btn sm alt" style="margin-top:6px" onclick="addRec('+i+')">+ Wishlist</button></div></div></div>'}
+function wish(){if(RECS===undefined&&!RLOAD)loadRecs();
+var L=S.books.filter(function(b){return b.s=="wishlist"}),nR=S.books.filter(function(b){return b.s=="read"&&avg(b)>0}).length;RL=RECS||[];
+var h=hd("TBR Jar","la pile qui me fait de l’œil")+'<div class="jar">'+L.map(function(b){return'<div class="fold" style="--r:'+(tilt(b.id)*2)+'deg" onclick="detail('+b.id+')">'+esc(b.t)+'</div>'}).join("")+(L.length?"":'<span class="muted">Le bocal est vide…</span>')+'</div><div style="text-align:center;margin:16px"><button class="btn" onclick="draw()">🎲 Tirer au sort</button></div>'+
+(PICK?'<div class="card" style="--r:-1.5deg"><div class="tape"></div><div class="row" style="align-items:flex-start">'+(PICK.img?'<img class="cv" src="'+esc(PICK.img)+'" alt="">':"")+'<div style="flex:3"><h2>'+esc(PICK.t)+'</h2><div>'+esc(PICK.a)+' · '+PICK.p+' p.</div><button class="btn alt" style="margin-top:8px" onclick="startPick()">Commencer ce livre</button></div></div></div>':"")+
+(L.length?'<h2>📚 Ma pile à lire</h2>'+coverGrid(L):"")+'<h2>✨ Recos pour toi</h2><p class="muted">Cherchées dans Google Books d’après tes '+nR+' lectures notées : auteurs et genres que tu aimes, livres déjà possédés exclus.</p>'+
+(RLOAD?'<p class="muted">Je fouille Google Books…</p>':RL.length?(RERR?'<p class="muted">Google Books est injoignable ici : recos locales en attendant.</p>':"")+RL.map(recCard).join(""):'<p class="muted">'+(nR?'Pas de reco pour l’instant.':'Note quelques livres lus pour débloquer les recos.')+'</p>')+'<div style="text-align:center;margin:10px"><button class="btn sm" onclick="RECS=undefined;render()">↻ Actualiser</button></div>';
+$(h)}
+function draw(){var L=S.books.filter(function(b){return b.s=="wishlist"});if(L.length)PICK=L[Math.floor(Math.random()*L.length)];render()}
+function startPick(){PICK.s="reading";PICK.st=TODAY;PICK=null;save();T="shelf";render()}
+function recs(){
+var liked=S.books.filter(function(b){return b.s=="read"&&avg(b)>=4}),have=S.books.map(function(b){return b.t});
+return CAND.filter(function(c){return have.indexOf(c.t)<0}).map(function(c){var sc=0,why=null;
+liked.forEach(function(b){if(b.a==c.a){sc+=3;why=b}else if(b.g==c.g){sc+=1;why=why||b}});return{c:c,sc:sc,why:why}}).filter(function(x){return x.sc>0}).sort(function(a,b){return b.sc-a.sc}).slice(0,4);}
+var CRIT=["Intrigue","Émotion","Style"],IC={Intrigue:"🕵️ ",Émotion:"💗 ",Style:"✒️ "},CQ={Intrigue:["subject:thriller","subject:policier"],Émotion:["subject:romance","subject:drame"],Style:["subject:littérature","prix littéraire roman"]};
+function ovl(v){document.getElementById("ovv").textContent=f1(+v)+"/5"}
+function favCrit(rd){var hi=rd.filter(function(b){return avg(b)>=4&&Object.values(b.r).some(function(x){return x>0})});if(!hi.length)return null;var best=null,bm=0;CRIT.forEach(function(k){var L=hi.filter(function(b){return b.r[k]>0}),m=L.length?L.reduce(function(a,b){return a+b.r[k]},0)/L.length:0;if(m>bm){bm=m;best=k}});return bm>=3?best:null}
+function pear(x,y){var n=x.length;if(n<3)return 0;var mx=x.reduce(function(a,c){return a+c},0)/n,my=y.reduce(function(a,c){return a+c},0)/n,a=0,b=0,c=0;for(var i=0;i<n;i++){a+=(x[i]-mx)*(y[i]-my);b+=(x[i]-mx)*(x[i]-mx);c+=(y[i]-my)*(y[i]-my)}return b&&c?a/Math.sqrt(b*c):0}
+function sum(L,f){return L.reduce(function(a,b){return a+f(b)},0)}
+function mean(L,f){return L.length?sum(L,f)/L.length:0}
+function bar(l,v,mx,t){return'<div class="bar"><span>'+l+'</span><em><i style="--w:'+Math.round(v/mx*100)+'%"></i></em><b>'+t+'</b></div>'}
+function me(){auto();var U=S.user||{};
+var rd=S.books.filter(function(b){return b.s=="read"&&b.en}),rt=rd.filter(function(b){return avg(b)>0}),n=rd.length,pg=sum(rd,function(b){return b.p}),dd=sum(rd,function(b){return days(b.st,b.en)});
+var cm=CRIT.map(function(k){var L=rt.filter(function(b){return b.r[k]>0});return[k,mean(L,function(b){return b.r[k]}),L.length]}).filter(function(x){return x[2]}).sort(function(a,b){return b[1]-a[1]});
+var G={};rd.forEach(function(b){(G[b.g]=G[b.g]||[]).push(b)});
+var gl=Object.keys(G).map(function(g){var R2=G[g].filter(function(b){return avg(b)>0});return{g:g,n:G[g].length,m:mean(R2,avg)}}).sort(function(a,b){return b.n-a.n});
+var M2={};rd.forEach(function(b){var k=b.en.slice(0,7);M2[k]=(M2[k]||0)+1});var mk=Object.keys(M2).sort().slice(-6);
+var dist=[1,2,3,4,5].map(function(v){return[v,rt.filter(function(b){return Math.round(avg(b))==v}).length]});
+var mc=MOODS.map(function(m,i){return[m,rd.filter(function(b){return b.mood==i}).length]}).filter(function(x){return x[1]});
+var byA={};rd.forEach(function(b){byA[b.a]=(byA[b.a]||0)+1});var ta=Object.keys(byA).sort(function(a,b){return byA[b]-byA[a]})[0];
+var lg=rd.slice().sort(function(a,b){return b.p-a.p})[0],sh=rd.slice().sort(function(a,b){return a.p-b.p})[0];
+var ppd=function(b){return b.p/days(b.st,b.en)},fast=rd.slice().sort(function(a,b){return ppd(b)-ppd(a)})[0];
+var drv=CRIT.map(function(k){var L=rt.filter(function(b){return b.r[k]>0}),hi=L.filter(function(b){return b.r[k]>=4}),lo=L.filter(function(b){return b.r[k]<4});return{k:k,nh:hi.length,nl:lo.length,hi:hi.length?mean(hi,avg):0,lo:lo.length?mean(lo,avg):0}});
+var drvOK=drv.filter(function(x){return x.nh&&x.nl}).sort(function(a,b){return(b.hi-b.lo)-(a.hi-a.lo)});
+var I=[],bs=rt.slice().sort(function(a,b){return avg(b)-avg(a)});
+if(drvOK.length)I.push('Tes notes globales montent surtout quand <b>'+drvOK[0].k+'</b> est forte : '+f1(drvOK[0].hi)+'★ en moyenne (jauge ≥ 4) contre '+f1(drvOK[0].lo)+'★ sinon. C’est ce qui guide tes recos.');
+if(cm.length>1)I.push('Ce qui te marque le plus : <b>'+cm[0][0]+'</b> ('+f1(cm[0][1])+'/5 en jauge), le moins : <b>'+cm[cm.length-1][0]+'</b> ('+f1(cm[cm.length-1][1])+'/5).');
+if(bs.length>1)I.push('Ton coup de cœur : <b>'+esc(bs[0].t)+'</b> ('+f1(avg(bs[0]))+'★). Le moins aimé : <b>'+esc(bs[bs.length-1].t)+'</b> ('+f1(avg(bs[bs.length-1]))+'★).');
+var gr=gl.filter(function(x){return x.m>0}).sort(function(a,b){return b.m-a.m});
+if(gr.length)I.push('Ton genre le mieux noté : <b>'+esc(gr[0].g)+'</b> ('+f1(gr[0].m)+'★ de moyenne)'+(gl[0]&&gl[0].g!=gr[0].g?', alors que tu lis surtout du <b>'+esc(gl[0].g)+'</b> ('+gl[0].n+' livres).':'.'));
+if(n&&dd)I.push('Tu lis environ <b>'+Math.round(pg/dd)+' pages par jour</b>, soit <b>'+f1(dd/n)+' jours par livre</b>. Lecture la plus rapide : <b>'+esc(fast.t)+'</b> ('+Math.round(ppd(fast))+' p./jour).');
+var lo=rt.filter(function(b){return b.p>=300}),sr=rt.filter(function(b){return b.p<300});
+if(lo.length&&sr.length){var d=mean(lo,avg)-mean(sr,avg);I.push(Math.abs(d)<.25?'La longueur du livre n’influence pas vraiment tes notes.':'Tes livres de 300 pages et plus sont '+(d>0?'mieux':'moins bien')+' notés que les courts ('+f1(mean(lo,avg))+' contre '+f1(mean(sr,avg))+'★).')}
+if(rt.length>=4){var o=rt.slice().sort(function(a,b){return a.en.localeCompare(b.en)}),h=Math.floor(o.length/2),a1=mean(o.slice(0,h),avg),a2=mean(o.slice(h),avg);I.push(Math.abs(a2-a1)<.2?'Tes notes sont stables au fil des lectures.':'Tes notes '+(a2>a1?'montent':'baissent')+' : '+f1(a1)+'★ au début, '+f1(a2)+'★ sur tes dernières lectures.')}
+if(mc.length){mc.sort(function(a,b){return b[1]-a[1]});I.push('Humeur n°1 après un livre : <b>'+mc[0][0]+'</b> ('+mc[0][1]+'×).')}
+if(!I.length)I.push('Termine et note quelques livres : ton analyse apparaît ici.');
+var D=function(i){return S.done.indexOf(i)>=0},ln=0,F5=[0,1,2,3,4];
+for(var r=0;r<5;r++){if(F5.every(function(c){return D(r*5+c)}))ln++;if(F5.every(function(c){return D(c*5+r)}))ln++}
+if(F5.every(function(c){return D(c*6)}))ln++;if(F5.every(function(c){return D(4+c*4)}))ln++;
+var NB=S.bingo.length,cnt=function(st){return S.books.filter(function(b){return b.s==st}).length};
+var ev=rd.slice().sort(function(a,b){return SORT=="note"?avg(b)-avg(a):SORT=="date"?b.en.localeCompare(a.en):(b.r.Émotion||0)-(a.r.Émotion||0)});
+var mxg=Math.max.apply(null,gl.map(function(x){return x.n}).concat([1])),mxm=Math.max.apply(null,mk.map(function(k){return M2[k]}).concat([1])),mxd=Math.max.apply(null,dist.map(function(x){return x[1]}).concat([1]));
+$(hd("Mon profil","mon petit bilan ♡")+'<div class="card" style="--r:-1deg"><div class="tape"></div><div class="row"><div class="cam" onclick="profSheet()"><div class="scr"'+(U.photo?' style="background:url('+U.photo+') center/cover"':'')+'>'+(U.photo?'':'📖')+'</div><i class="lens"></i></div><div><h2 style="margin:0">'+esc(U.name||"Mon carnet")+'</h2><button class="btn sm" onclick="profSheet()">✏️ Profil</button><div>'+n+' livre'+(n>1?'s':'')+' lu'+(n>1?'s':'')+' en 2026</div>'+(S.win?'<span class="stampbtn">🏆 Bingo complet</span>':'')+'</div></div></div>'+
+'<div class="dark"><small>pages lues en 2026</small><div class="big">'+pg+'</div><small>'+(n?'depuis le '+rd.map(function(b){return b.st}).filter(Boolean).sort()[0].split("-").reverse().join("/"):"")+'</small>'+st("lips","right:12px;top:-16px;width:50px;--r:12deg")+st("leo","left:-10px;bottom:-12px;width:34px;--r:-10deg")+'</div>'+
+'<div class="chips">'+[[n,"livres lus"],[pg,"pages"],[(rt.length?f1(mean(rt,avg)):"–"),"note moy."],[(dd?Math.round(pg/dd):0),"pages/jour"]].map(function(c,i){return'<div class="chip k'+i+'"><b>'+c[0]+'</b><span>'+c[1]+'</span></div>'}).join("")+'</div><h2>🔎 Mon analyse</h2><div class="posts">'+I.map(function(x,i){return'<div class="post p'+(i%4)+'" style="--r:'+(((i*37)%5)-2)+'deg"><i></i>'+x+'</div>'}).join("")+'</div>'+
+'<h2>⭐ Mes notes</h2><div class="card">'+(rt.length?'<div class="muted">Jauges moyennes (ce qui te marque)</div>'+cm.map(function(x){return bar(x[0],x[1],5,f1(x[1])+'/5')}).join("")+'<div class="muted" style="margin:10px 0 2px">Ta note globale quand la jauge est forte (≥ 4)</div>'+drv.filter(function(x){return x.nh}).map(function(x){return bar(x.k,x.hi,5,f1(x.hi)+'★ ('+x.nh+')')}).join("")+'<div class="muted" style="margin:10px 0 2px">Répartition des notes globales</div>'+dist.map(function(x){return bar(x[0]+'★',x[1],mxd,x[1])}).join(""):'<p class="muted">Note un livre lu pour voir tes moyennes.</p>')+'</div>'+
+(gl.length?'<h2>📚 Mes genres</h2><div class="card">'+gl.map(function(x){return bar(esc(x.g),x.n,mxg,x.n+' · '+(x.m?f1(x.m)+'★':'–'))}).join("")+'</div>':"")+
+'<h2>📅 Mon année en lecture</h2><div class="card"><div class="muted">Nombre de livres terminés chaque mois de '+TODAY.slice(0,4)+'</div><div class="months">'+["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."].map(function(nm,i){var k=TODAY.slice(0,4)+"-"+("0"+(i+1)).slice(-2),v=M2[k]||0;return'<div class="mo'+(v?" on":"")+'" style="--r:'+(((i*7)%5)-2)+'deg"><span>'+nm+'</span><b>'+v+'</b></div>'}).join("")+'</div></div>'+
+'<h2>🧾 Mon bilan</h2><div class="ticket"><p><span>LIBRAIRIE DU CARNET</span><span>2026</span></p><p><span>Livres lus</span><span>'+n+'</span></p><p><span>Pages lues</span><span>'+pg+'</span></p><p><span>Pages / jour</span><span>'+(dd?Math.round(pg/dd):0)+'</span></p><p><span>Jours / livre</span><span>'+(n?f1(dd/n):0)+'</span></p><p><span>Pages / livre</span><span>'+(n?Math.round(pg/n):0)+'</span></p><p><span>Note moyenne</span><span>'+(rt.length?f1(mean(rt,avg)):'–')+' / 5</span></p>'+(lg?'<p><span>Le plus long</span><span>'+esc(lg.t)+' ('+lg.p+')</span></p><p><span>Le plus court</span><span>'+esc(sh.t)+' ('+sh.p+')</span></p>':"")+(ta?'<p><span>Auteur·rice le plus lu</span><span>'+esc(ta)+'</span></p>':"")+'<p><span>En cours / en pause</span><span>'+cnt("reading")+' / '+cnt("paused")+'</span></p><p><span>Dans la wishlist</span><span>'+cnt("wishlist")+'</span></p><p><span>Citations notées</span><span>'+sum(S.books,function(b){return b.q.length})+'</span></p></div>'+
+(mc.length?'<h2>💭 Mes humeurs</h2><div class="card">'+mc.map(function(x){return bar(x[0],x[1],mc[0][1],x[1]+'×')}).join("")+'</div>':"")+
+'<div class="keys"></div><div class="bcard">'+st("red","right:-8px;top:-14px;width:40px;--r:14deg")+'<div class="row"><div style="flex:2;line-height:1.5">'+R("BINGO")+' <span class="mono">2026</span></div><button class="btn sm'+(BE?'':' alt')+'" onclick="BE=!BE;render()">'+(BE?'✓ Terminé':'✏️ Modifier')+'</button></div><p class="muted">'+S.done.length+'/'+NB+' cases · '+ln+' ligne'+(ln>1?'s':'')+' ⭐'+(BE?' · écris dans une case pour changer le défi':' · touche une case pour la tamponner')+'</p>'+bar("Progression",S.done.length,NB,S.done.length+"/"+NB)+
+(S.done.length>=NB?'<div class="card gold"><div class="tape"></div>🏆 <b>BINGO COMPLET !</b> Badge « Lectrice en or » débloqué.</div>':'')+
+'<div class="bingo">'+S.bingo.map(function(l,i){return BE?'<div class="cell e c'+(i%5)+'"><input aria-label="Défi '+(i+1)+'" value="'+esc(l)+'" onchange="S.bingo['+i+']=this.value;save()"></div>':'<div class="cell c'+(i%5)+(D(i)?" v":"")+'" style="--r:'+(tilt(i+3)/1.6)+'deg" onclick="tg('+i+')">'+esc(l)+'</div>'}).join("")+'</div>'+(BE?'<button class="btn sm" style="margin-top:10px" onclick="S.done=[];S.off=[];S.win=0;save();render()">↺ Vider les tampons</button>':"")+'</div>'+
+'<h2>⭐ Mes évaluations</h2><select onchange="SORT=this.value;render()"><option value="note"'+(SORT=="note"?" selected":"")+'>Tri : meilleure note</option><option value="date"'+(SORT=="date"?" selected":"")+'>Tri : plus récent</option><option value="emo"'+(SORT=="emo"?" selected":"")+'>Tri : émotion</option></select>'+
+ev.map(function(b){return'<div class="card" onclick="detail('+b.id+')"><b>'+esc(b.t)+'</b> — '+f1(avg(b))+' ★<div class="muted">'+esc(b.one)+'</div></div>'}).join("")+'<div class="row" style="margin-top:18px"><button class="btn sm alt" onclick="exp()">💾 Exporter</button><button class="btn sm" onclick="imp()">📂 Importer</button></div>')}
+var PH=null;
+function profSheet(){var U=S.user||{};PH=null;sheet('<h2>Mon profil</h2><div class="cam" style="margin:10px auto;flex:none;width:130px"><div class="scr" id="pv"'+(U.photo?' style="background:url('+U.photo+') center/cover"':'')+'>'+(U.photo?'':'📖')+'</div><i class="lens"></i></div><div style="text-align:center"><label class="btn sm" style="display:inline-block">📷 Choisir une photo<input type="file" accept="image/*" hidden onchange="photo(this)"></label> <button class="btn sm" onclick="noPhoto()">Retirer</button></div><input id="un" placeholder="Ton prénom ou pseudo" maxlength="24" value="'+esc(U.name||"")+'"><button class="btn" style="margin-top:8px" onclick="saveProf()">Enregistrer</button>')}
+function photo(inp){var f=inp.files[0];if(!f)return;var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){var c=document.createElement("canvas"),m=Math.min(im.width,im.height);c.width=c.height=240;c.getContext("2d").drawImage(im,(im.width-m)/2,(im.height-m)/2,m,m,0,0,240,240);PH=c.toDataURL("image/jpeg",.82);var v=document.getElementById("pv");v.style.background="url("+PH+") center/cover";v.textContent=""};im.src=r.result};r.readAsDataURL(f)}
+function noPhoto(){PH="";var v=document.getElementById("pv");v.style.background="";v.textContent="📖"}
+function saveProf(){var o=S.user||{};S.user={name:document.getElementById("un").value.trim(),photo:PH!==null?PH:(o.photo||"")};PH=null;save();close_();render()}
+function exp(){var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(S)],{type:"application/json"}));a.download="carnet-lectures.json";a.click()}
+function imp(){var i=document.createElement("input");i.type="file";i.accept=".json";i.onchange=function(){var r=new FileReader();r.onload=function(){try{S=JSON.parse(r.result);save();render()}catch(e){}};r.readAsText(i.files[0])};i.click()}
+function tg(i){if(BE)return;var k=S.done.indexOf(i);S.off=S.off||[];if(k>=0){S.done.splice(k,1);if(S.off.indexOf(i)<0)S.off.push(i)}else{S.done.push(i);var o=S.off.indexOf(i);if(o>=0)S.off.splice(o,1)}var w=S.done.length>=S.bingo.length;if(!w)S.win=0;save();render();if(w&&!S.win){S.win=1;save();render();reward()}}
+function reward(){var c="",K=["#e8668c","#f6d243","#8fb8d8","#9db89a","#c0392b"];for(var i=0;i<28;i++)c+='<i class="cf" style="left:'+(i*3.6)+'%;background:'+K[i%5]+';animation-delay:'+((i%7)*.15)+'s"></i>';sheet('<div style="text-align:center;position:relative;overflow:hidden;padding-bottom:6px">'+c+'<div style="width:90px;margin:0 auto">'+st("red","position:static;display:block;width:90px;--r:8deg")+'</div><div style="margin:10px 0">'+R("BINGO")+'</div><p>Les '+S.bingo.length+' cases sont tamponnées !<br>Récompense : le badge <b>🏆 Lectrice en or</b> est collé sur ton profil.</p><button class="btn" onclick="close_();render()">Merci le carnet ✿</button></div>')}
+function addRec(i){var c=RL[i]&&RL[i].c;if(!c)return;S.books.push({id:Date.now()%1e9,t:c.t,a:c.a,p:c.p||300,g:c.g,img:c.img||"",gid:c.gid||"",c:S.books.length%8,s:"wishlist",st:"",en:"",r:{Intrigue:0,Émotion:0,Style:0},one:"",mood:-1,q:[],ost:""});RECS=RECS.filter(function(x){return x.c!==c});save();render()}
+function close_(){document.getElementById("modal").innerHTML=""}
+function sheet(h){document.getElementById("modal").innerHTML='<div class="sheet" onclick="if(event.target==this){close_();render()}"><div>'+h+'</div></div>'}
+function addSheet(){PK={};RES=[];sheet('<h2>Nouveau livre</h2><div class="row"><input id="nq" placeholder="🔍 Titre, auteur ou ISBN"><button class="btn sm" style="flex:0 0 auto" onclick="srch()">OK</button></div><div id="rs"></div><input id="nt" placeholder="Titre"><input id="na" placeholder="Auteur·rice"><input id="np" type="number" placeholder="Pages"><select id="ns"><option value="wishlist">Wishlist</option><option value="reading">En cours</option><option value="read">Lu</option></select><div class="row"><input id="nd" type="date" aria-label="Début"><input id="ne" type="date" aria-label="Fin"></div><p class="muted">Recherche via Google Books, ou saisie à la main.</p><button class="btn" onclick="addB()">Coller dans le carnet</button>')}
+function addB(){var t=document.getElementById("nt").value.trim();if(!t)return;S.books.push({id:Date.now()%1e9,t:t,a:document.getElementById("na").value||"?",p:+document.getElementById("np").value||250,g:PK.g||"Roman",img:PK.img||"",gid:PK.gid||"",c:S.books.length%8,s:document.getElementById("ns").value,st:document.getElementById("nd").value,en:document.getElementById("ne").value,r:{Intrigue:0,Émotion:0,Style:0},one:"",mood:-1,q:[],ost:""});save();close_();render()}
+function up(id,k,v){var b=bk(id);if(k.indexOf("r.")==0)b.r[k.slice(2)]=+v;else b[k]=v;save()}
+function detail(id){var b=bk(id);SEL=id;
+sheet('<div class="row"><div class="bk" style="background:'+COL[b.c%8]+(b.img?' url('+b.img+') center/cover;color:transparent;text-shadow:none':'')+';height:120px;--r:-3deg;margin:0;flex:0 0 80px">'+esc(b.t)+'</div><div style="flex:3"><h2 style="margin:0">'+esc(b.t)+'</h2>'+esc(b.a)+' · '+b.p+' p.</div></div>'+
+'<select onchange="up('+id+',\'s\',this.value)">'+Object.keys(STAT).map(function(k){return'<option value="'+k+'"'+(b.s==k?" selected":"")+'>'+STAT[k]+'</option>'}).join("")+'</select>'+
+'<div class="row"><input type="date" value="'+b.st+'" onchange="up('+id+',\'st\',this.value)" aria-label="Début"><input type="date" value="'+b.en+'" onchange="up('+id+',\'en\',this.value)" aria-label="Fin"></div>'+
+'<div class="card gold" style="--r:-1deg;margin:10px 0"><div class="row"><b style="flex:2;font-size:21px">⭐ Note globale</b><b id="ovv" style="font-size:24px">'+f1(b.ov||0)+'/5</b></div><input type="range" min="0" max="5" step=".5" value="'+(b.ov||0)+'" oninput="ovl(this.value)" onchange="up('+id+',\'ov\',+this.value)"></div><div class="muted">Jauges : ce qui t’a le plus marquée dans ce livre</div>'+Object.keys(b.r).map(function(k){return'<div class="row"><span style="flex:1">'+(IC[k]||"")+k+'</span><input style="flex:2" type="range" min="0" max="5" step=".5" value="'+b.r[k]+'" onchange="up('+id+',\'r.'+k+'\',this.value)"></div>'}).join("")+
+'<input placeholder="Une phrase pour résumer…" value="'+esc(b.one)+'" onchange="up('+id+',\'one\',this.value)">'+
+'<select onchange="up('+id+',\'mood\',+this.value)"><option value="-1">Humeur post-lecture…</option>'+MOODS.map(function(m,i){return'<option value="'+i+'"'+(b.mood===i?" selected":"")+'>'+m+'</option>'}).join("")+'</select>'+
+'<select onchange="up('+id+',\'fmt\',this.value);detail('+id+')"><option value="cassette">📼 Cassette</option><option value="vinyl"'+(b.fmt=="vinyl"?" selected":"")+'>💿 Vinyle</option></select><input placeholder="🎵 Bande originale du livre" value="'+esc(b.ost)+'" onchange="up('+id+',\'ost\',this.value);detail('+id+')">'+(b.ost?(b.fmt=="vinyl"?vinyl(b.ost):cass(b.ost)):"")+
+b.q.map(function(q,i){return'<div class="quote" style="--r:'+(i%2?1:-1)+'deg">“'+esc(q.x)+'” <span class="stampbtn">'+esc(q.k)+'</span></div>'}).join("")+
+'<div class="row"><input id="qx" placeholder="Ajouter une citation"><select id="qk" style="flex:0 0 120px">'+STAMPS.map(function(s){return"<option>"+s+"</option>"}).join("")+'</select></div><button class="btn sm" onclick="addQ('+id+')">Coller la citation</button> <button class="btn sm" onclick="delB('+id+')" style="background:#f3c0c0">Supprimer</button> <button class="btn sm alt" onclick="close_();render()">Fermer</button>')}
+function addQ(id){var x=document.getElementById("qx").value.trim();if(!x)return;bk(id).q.push({x:x,k:document.getElementById("qk").value});save();detail(id)}
+function delB(id){S.books=S.books.filter(function(b){return b.id!=id});save();close_();render()}
+render();
+</script></body></html>
